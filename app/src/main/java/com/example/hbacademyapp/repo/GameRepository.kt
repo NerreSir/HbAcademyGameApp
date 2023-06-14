@@ -1,15 +1,12 @@
 package com.example.hbacademyapp.repo
 
-import com.example.hbacademyapp.data.GameService
-import com.example.hbacademyapp.domain.item.GameItem
-import com.example.hbacademyapp.domain.item.toGameItem
+import com.example.hbacademyapp.data.GameApi
+import com.example.hbacademyapp.data.model.GameModel
 import javax.inject.Inject
 
-class GameRepository @Inject constructor(private val gameService: GameService) {
+class GameRepository @Inject constructor(private val gameApi: GameApi) {
 
-    suspend fun getGames(): List<GameItem> {
-        return gameService.getGames().map {
-            it.toGameItem()
-        }
+    suspend fun getGames(): List<GameModel> {
+        return gameApi.getGames().results
     }
 }

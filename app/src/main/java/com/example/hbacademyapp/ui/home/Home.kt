@@ -17,50 +17,45 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.rememberImagePainter
-import com.example.hbacademyapp.domain.item.GameItem
+import coil.compose.rememberAsyncImagePainter
+import com.example.hbacademyapp.data.model.GameModel
 import com.example.hbacademyapp.ui.theme.HbBlue
+import com.example.hbacademyapp.ui.theme.redHatDisplay
 
 @Composable
 fun HomeScreen() {
     val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
-    val games by homeViewModel.games.collectAsState()
+    val games = homeViewModel.games.collectAsState()
 
     Column {
         TopAppBar(
             title = {
                 Text(
+                    fontFamily = redHatDisplay, //TODO çalışıyo mu bilemedim ya
                     text = "GAMES",
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     color = White,
                     fontSize = 20.sp,
-                    )
+                )
             },
             colors = topAppBarColors(containerColor = HbBlue)
         )
 
         LazyColumn {
-            items(games) { game: GameItem ->
+            items(games.value) { game: GameModel ->
                 GameCard(game = game)
             }
         }
@@ -68,12 +63,12 @@ fun HomeScreen() {
 }
 
 @Composable
-fun GameCard(game: GameItem) {
+fun GameCard(game: GameModel) {
 
-    val image = rememberImagePainter(data = game.thumbnail)
+    val image = rememberAsyncImagePainter(model = game.backgroundImage)
 
     Card(
-        //TODO elevation = 4.dp,
+        //elevation = 4.dp,
         shape = RoundedCornerShape(5.dp),
         modifier = Modifier
             .padding(top = 5.dp, bottom = 5.dp, start = 10.dp, end = 10.dp)
@@ -93,8 +88,7 @@ fun GameCard(game: GameItem) {
 
             Column(modifier = Modifier.padding(10.dp)) {
 
-                Text(text = game.title, fontWeight = FontWeight.Bold)
-                Text(text = game.short_description, maxLines = 4, overflow = TextOverflow.Ellipsis)
+                game.name?.let { Text(text = it, fontWeight = FontWeight.Bold) }
 
             }
         }

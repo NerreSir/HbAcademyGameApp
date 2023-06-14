@@ -1,20 +1,26 @@
 package com.example.hbacademyapp.data.model
 
+import com.google.gson.annotations.SerializedName
+
+
 data class GameModel(
 
-    val id : Int,
-    val title: String,
-    val thumbnail: String,
-    val short_description: String
- /*
-    val developer: String,
-    val freetogame_profile_url: String,
-    val game_url: String,
-    val genre: String,
-    val id: Int,
-    val platform: String,
-    val publisher: String,
-    val release_date: String
+    @SerializedName("id") var id: Int? = null,
+    @SerializedName("slug") var slug: String? = null,
+    @SerializedName("name") var name: String? = null,
+    @SerializedName("released") var released: String? = null,
+    @SerializedName("tba") var tba: Boolean? = null,
+    @SerializedName("background_image") var backgroundImage: String? = null,
+    @SerializedName("rating") var rating: Double? = null,
+    @SerializedName("rating_top") var ratingTop: Int? = null,
+    @SerializedName("ratings_count") var ratingsCount: Int? = null,
+    @SerializedName("reviews_text_count") var reviewsTextCount: String? = null,
+    @SerializedName("added") var added: Int? = null,
+    @SerializedName("metacritic") var metacritic: Int? = null,
+    @SerializedName("playtime") var playtime: Int? = null,
+    @SerializedName("suggestions_count") var suggestionsCount: Int? = null,
+    @SerializedName("updated") var updated: String? = null,
+    @SerializedName("esrb_rating") var esrbRating: EsrbRating? = EsrbRating(),
+    @SerializedName("platforms") var platforms: ArrayList<Platforms> = arrayListOf()
 
-  */
 )

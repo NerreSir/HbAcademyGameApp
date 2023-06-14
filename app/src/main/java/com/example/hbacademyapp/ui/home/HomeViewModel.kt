@@ -2,20 +2,19 @@ package com.example.hbacademyapp.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hbacademyapp.domain.GetGamesUseCase
-import com.example.hbacademyapp.domain.item.GameItem
+import com.example.hbacademyapp.data.model.GameModel
+import com.example.hbacademyapp.repo.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val getGamesUseCase: GetGamesUseCase) : ViewModel() {
+class HomeViewModel @Inject constructor(private val gameRepository: GameRepository) : ViewModel() {
 
-    private val _games = MutableStateFlow(emptyList<GameItem>())
-    val games: StateFlow<List<GameItem>> get() = _games
+    private val _games = MutableStateFlow(emptyList<GameModel>())
+    var games: StateFlow<List<GameModel>> = _games
 
     init {
         getGames()
@@ -24,12 +23,9 @@ class HomeViewModel @Inject constructor(private val getGamesUseCase: GetGamesUse
     private fun getGames() {
 
         viewModelScope.launch {
-            try {
 
-                val games = getGamesUseCase()
-                _games.value = games
+            _games.emit(gameRepository.getGames())
 
-            } catch (_: Exception) {}
         }
 
     }

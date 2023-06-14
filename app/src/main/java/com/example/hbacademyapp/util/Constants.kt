@@ -1,19 +1,12 @@
 package com.example.hbacademyapp.util
 
-import com.example.hbacademyapp.data.model.GameModel
-import retrofit2.http.GET
-import retrofit2.http.Query
-import retrofit2.Call
 
+object Constants {
 
-class Constants {
+    const val BASE_URL = "https://api.rawg.io/api/"
+    const val GAMES_ENDPOINT = "games"
+    const val API_KEY = "0c2fe9fa2d9846e0abc483a5fdbb5075"
 
-    companion object{
-
-        const val BASE_URL = "https://www.freetogame.com/api/"
-        const val GAMES_ENDPOINT = "games"
-
-    }
 }
 
 
