@@ -45,18 +45,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.hbacademyapp.data.model.GameModel
 import com.example.hbacademyapp.ui.theme.HbBlue
 import com.example.hbacademyapp.ui.theme.redHatDisplay
+import androidx.hilt.navigation.compose.hiltViewModel
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen() {
-    val homeViewModel = viewModel(modelClass = HomeViewModel::class.java)
+fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hiltViewModel()) {
     val games = homeViewModel.games.collectAsState()
-    val gameDetail = homeViewModel.gameDetail.collectAsState()
 
     Column {
         TopAppBar(
@@ -123,7 +123,7 @@ fun HomeScreen() {
         ) {
             LazyColumn {
                 items(games.value) { game: GameModel ->
-                    GameCard(game = game, viewModel = homeViewModel)
+                    GameCard(game = game, navController = navController)
                 }
             }
         }
@@ -131,7 +131,7 @@ fun HomeScreen() {
 }
 
 @Composable
-fun GameCard(game: GameModel, viewModel: HomeViewModel) {
+fun GameCard(game: GameModel, navController: NavController) {
 
     val image = rememberAsyncImagePainter(model = game.backgroundImage)
 
@@ -141,9 +141,9 @@ fun GameCard(game: GameModel, viewModel: HomeViewModel) {
             .height(136.dp)
             .padding(1.dp)
             .clickable {
-                       game.id?.let {
-                           viewModel.getGameDetail(it)
-                       }
+                game.id?.let { gameId ->
+                    navController.navigate("detail/$gameId")
+                }
             },
         shape = RoundedCornerShape(5.dp),
     ) {
