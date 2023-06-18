@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,9 +20,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,79 +60,93 @@ import com.example.hbacademyapp.data.model.GameModel
 import com.example.hbacademyapp.ui.theme.HbBlue
 import com.example.hbacademyapp.ui.theme.redHatDisplay
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import com.example.hbacademyapp.ui.navBar.BottomNavigationBar
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hiltViewModel()) {
     val games = homeViewModel.games.collectAsState()
 
-    Column {
-        TopAppBar(
-            title = {
-                Text(
-                    fontFamily = redHatDisplay, //TODO çalışıyo mu bilemedim ya
-                    text = "GAMES",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    color = White,
-                    fontSize = 20.sp,
-                )
-            },
-            colors = topAppBarColors(containerColor = HbBlue)
-        )
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController = navController) }
+    ) {
+        Column {
+            TopAppBar(
+                title = {
+                    Text(
+                        fontFamily = redHatDisplay,
+                        text = "Games",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        color = White,
+                        fontSize = 20.sp,
+                    )
+                },
+                colors = topAppBarColors(containerColor = HbBlue)
+            )
 
-        var text by remember { mutableStateOf("") }
-        var active by remember { mutableStateOf(false) }
+            var text by remember { mutableStateOf("") }
+            var active by remember { mutableStateOf(false) }
 
-        Column(
-            modifier = Modifier
-                .border(BorderStroke(1.dp, Green))
-                .height(75.dp)
-            //.padding(top = 10.dp)
-        ) {
-            Scaffold {
-                SearchBar(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    query = text,
-                    onQueryChange = { text = it },
-                    onSearch = { active = false },
-                    active = active,
-                    onActiveChange = { active = it },
-                    placeholder = { Text(text = "Search for Games") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search Icon"
-                        )
-                    },
-                    trailingIcon = {
-                        if (active) {
-                            Icon(modifier = Modifier.clickable {
-                                if (text.isNotEmpty()) {
-                                    text = ""
-                                } else {
-                                    active = false
-                                }
-                            }, imageVector = Icons.Default.Close, contentDescription = "Close Icon")
+            Column(
+                modifier = Modifier
+                    .border(BorderStroke(1.dp, Green))
+                    .height(75.dp)
+            ) {
+                Scaffold {
+                    SearchBar(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        query = text,
+                        onQueryChange = { text = it },
+                        onSearch = { active = false },
+                        active = active,
+                        onActiveChange = { active = it },
+                        placeholder = { Text(text = "Search for Games") },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search Icon"
+                            )
+                        },
+                        trailingIcon = {
+                            if (active) {
+                                Icon(
+                                    modifier = Modifier.clickable {
+                                        if (text.isNotEmpty()) {
+                                            text = ""
+                                        } else {
+                                            active = false
+                                        }
+                                    },
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Close Icon"
+                                )
+                            }
                         }
+                    ) {
                     }
-                ) {
                 }
             }
-        }
 
-        Column(
-            modifier = Modifier
-                .border(BorderStroke(1.dp, Red))
-                .fillMaxSize()
-                .padding(top = 1.dp)
-        ) {
-            LazyColumn {
-                items(games.value) { game: GameModel ->
-                    GameCard(game = game, navController = navController)
+            Column(
+                modifier = Modifier
+                    .border(BorderStroke(1.dp, Red))
+                    .fillMaxSize()
+                    .padding(top = 1.dp)
+            ) {
+                LazyColumn {
+                    items(games.value) { game: GameModel ->
+                        GameCard(game = game, navController = navController)
+                    }
                 }
             }
         }
@@ -186,3 +209,27 @@ fun GameCard(game: GameModel, navController: NavController) {
 
 
 //.border(BorderStroke(1.dp, Red))
+
+//DEPO
+//Burda işlemi aslında otomatize yapmış çok daha mantıklı ama navigasyon yönlendirmesinin
+//daha zor olduğunu düşündüğüm için kullanmayacağım gibi
+/*
+items.forEach { item ->
+                BottomNavigationItem(modifier = Modifier.border(BorderStroke(1.dp, Blue)),
+                    icon = {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(imageVector = item.icon, contentDescription = "Icon")
+                            Text(item.title)
+                        }
+                    },
+                    selected = currentRoute == item.route,
+                    onClick = {
+                        navController.navigate(item.route) {
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+ */
