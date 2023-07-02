@@ -9,7 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hbacademyapp.ui.home.DetailScreen
+import com.example.hbacademyapp.ui.home.FavoriteScreen
 import com.example.hbacademyapp.ui.home.HomeScreen
+import com.example.hbacademyapp.ui.navBar.NavigationItem
 import com.example.hbacademyapp.ui.theme.HbAcademyAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,10 +24,10 @@ class MainActivity : ComponentActivity() {
             HbAcademyAppTheme {
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "home") {
-                    composable("home") { HomeScreen(navController) }
+                NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
+                    composable(NavigationItem.Home.route) { HomeScreen(navController) }
                     composable(
-                        "detail/{gameId}",
+                        "${NavigationItem.Detail.route}/{gameId}",
                         arguments = listOf(navArgument("gameId") { type = NavType.IntType })
                     ) { backStackEntry ->
                         val gameId = backStackEntry.arguments?.getInt("gameId")
@@ -33,7 +35,9 @@ class MainActivity : ComponentActivity() {
                             DetailScreen(navController, id)
                         }
                     }
+                    composable(NavigationItem.Favorite.route) { FavoriteScreen(navController) }
                 }
+
             }
         }
     }

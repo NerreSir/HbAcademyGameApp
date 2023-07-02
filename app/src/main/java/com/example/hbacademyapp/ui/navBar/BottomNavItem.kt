@@ -6,6 +6,7 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -58,4 +59,5 @@ fun BottomNavigationBar(navController: NavController) {
 sealed class NavigationItem(val route: String, val title: String, val icon: ImageVector) {
     object Home : NavigationItem("home", "Home", Icons.Default.Home)
     object Favorite : NavigationItem("favorite", "Favorite", Icons.Default.Star)
+    object Detail : NavigationItem("detail", "Detail", Icons.Default.Info) // Add this line
 }
