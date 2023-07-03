@@ -139,9 +139,10 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
 
             Column(
                 modifier = Modifier
-                    .border(BorderStroke(1.dp, Red))
+                    .border(BorderStroke(3.dp, Red))
                     .fillMaxSize()
                     .padding(top = 1.dp)
+                    .padding(bottom = 70.dp)
             ) {
                 LazyColumn {
                     items(games.value) { game: GameModel ->

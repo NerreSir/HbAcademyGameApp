@@ -59,5 +59,5 @@ fun BottomNavigationBar(navController: NavController) {
 sealed class NavigationItem(val route: String, val title: String, val icon: ImageVector) {
     object Home : NavigationItem("home", "Home", Icons.Default.Home)
     object Favorite : NavigationItem("favorite", "Favorite", Icons.Default.Star)
-    object Detail : NavigationItem("detail", "Detail", Icons.Default.Info) // Add this line
+    object Detail : NavigationItem("detail", "Detail", Icons.Default.Info)
 }
