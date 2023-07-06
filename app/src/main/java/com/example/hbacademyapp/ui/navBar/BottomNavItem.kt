@@ -39,7 +39,15 @@ fun BottomNavigationBar(navController: NavController) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Icon(imageVector = item.icon, contentDescription = "Icon")
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = "Icon",
+                            tint = if (currentRoute == item.route) {
+                                Color(0xFF1064BC)
+                            } else {
+                                Color.Gray
+                            }
+                        )
                         Text(item.title)
                     }
                 },

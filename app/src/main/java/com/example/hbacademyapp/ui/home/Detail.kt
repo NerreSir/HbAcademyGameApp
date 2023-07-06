@@ -90,7 +90,9 @@ fun DetailScreen(
             actions = {
                 IconButton(
                     modifier = Modifier,
-                    onClick = { /* İkinci butona tıklanınca yapılacak işlemi buraya yazabilirsiniz */ }
+                    onClick = {
+                        //TODO fav butonu
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Favorite,
